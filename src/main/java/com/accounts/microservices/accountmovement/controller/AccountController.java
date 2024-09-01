@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,17 @@ public class AccountController {
     public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
         Optional<Account> account = accountService.findAccountById(id);
         return account.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/byAccountNumber/{accountNumber}")
+    public ResponseEntity<Account> getByAccountNumber(@PathVariable String accountNumber) {
+        Optional<Account> account = accountService.findAccountByAccountNumber(accountNumber);
+        return account.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    @GetMapping("/{id}/balance")
+    public ResponseEntity<BigDecimal> getBalance(@PathVariable Long id) {
+        Optional<BigDecimal> balance = accountService.findAccountBalanceById(id);
+        return balance.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

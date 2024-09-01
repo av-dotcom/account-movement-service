@@ -1,5 +1,6 @@
 package com.accounts.microservices.accountmovement.controller;
 
+import com.accounts.microservices.accountmovement.model.AccountReport;
 import com.accounts.microservices.accountmovement.model.Movement;
 import com.accounts.microservices.accountmovement.service.MovementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,17 @@ public class MovementController {
     @Autowired
     public MovementController(MovementService movementService) {
         this.movementService = movementService;
+    }
+
+    @GetMapping("/reports")
+    public ResponseEntity<List<AccountReport>> getAccountReport(
+            @RequestParam String cliente,
+            @RequestParam String fechaInicio,
+            @RequestParam String fechaFin) {
+        LocalDate startDate = LocalDate.parse(fechaInicio, DateTimeFormatter.ISO_DATE);
+        LocalDate endDate = LocalDate.parse(fechaFin, DateTimeFormatter.ISO_DATE);
+        List<AccountReport> report = movementService.getAccountReport(cliente, startDate, endDate);
+        return ResponseEntity.ok(report);
     }
 
     @GetMapping

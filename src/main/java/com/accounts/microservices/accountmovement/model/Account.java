@@ -2,6 +2,8 @@ package com.accounts.microservices.accountmovement.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Account {
     @Id
@@ -14,11 +16,43 @@ public class Account {
     @Column(nullable = false)
     private String accountType;
 
+    private BigDecimal balance;
+
     @Column(nullable = false)
     private Double initialBalance;
 
     @Column(nullable = false)
     private Boolean status;
+
+    private String clientId;
+
+    // Getters and setters for all fields including clientId
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public Account(String accountNumber, String accountType, Double initialBalance, Boolean status) {
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+        this.initialBalance = initialBalance;
+        this.status = status;
+        this.balance = BigDecimal.valueOf(initialBalance);  // Initialize balance
+    }
+
+    public Account() {
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
 
     public Long getId() {
         return id;
